@@ -15,6 +15,39 @@ public class Type : MonoBehaviour
 	[SerializeField]
 	private List<Type> _weak;
 
+	public void Initilize()
+	{
+		Asset_Type_Array = Resouces.RoadAll("Assets");
+		//第二引数にtypeof(GameObject)と書くとアセットの型が指定できる
+
+		Available_Type_List = new List<string>();
+		Available_Type_List.AddRange(_strong.Select(x => x.Name));
+		Available_Type_List.AddRange(_slightlyStrong.Select(x => x.Name));
+		Available_Type_List.AddRange(_slightlyWeak.Select(x => x.Name));
+		Available_Type_List.AddRange(_weak.Select(x => x.Name));
+		//現在ある属性リストの用意
+
+		foreach(var x in Asset_Type_Array)
+		{
+			if (Available_Type_List.Ecists(key => key == x.name))
+			{
+				Available_Type_List.Remove(x.name);
+			}
+			else
+			{
+				Debug.LogWarning(x.name+"is not available in "+this.Name);
+				Application.Quit();
+			}
+		}
+		if(Available_Type_List.Count != 0)
+		{
+			Debug.LogWarning(this.Name+"has type which is not compatible");
+			Debug.LogWarning(Available_Type_List.ToArray());
+			Application.Quit();
+		}
+
+	}
+
 	public string Name
 	{
 		get { return transform.name; }
