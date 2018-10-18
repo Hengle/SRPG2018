@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
+using UnityEditor;
 
 public class Type : MonoBehaviour
 {
@@ -17,10 +18,19 @@ public class Type : MonoBehaviour
 
 	public void Initilize()
 	{
-		Asset_Type_Array = Resouces.RoadAll("Assets");
-		//第二引数にtypeof(GameObject)と書くとアセットの型が指定できる
+		// Resources/Prefabs/Typesディレクトリ以下のTypeクラスのアタッチされたGameObjectを全て読み込む.
+		var typeList = Resources.LoadAll<Type>("Prefabs/Types");
 
-		Available_Type_List = new List<string>();
+		// === 4debug ===
+		Debug.Log("Length = " + typeList.Length);	// 4debug
+		foreach(var item in typeList)
+		{
+			Debug.Log("Asset name = " + item.name);	// 4debug
+		}
+		// === debug end ===
+
+		/*
+		var Available_Type_List = new List<string>();
 		Available_Type_List.AddRange(_strong.Select(x => x.Name));
 		Available_Type_List.AddRange(_slightlyStrong.Select(x => x.Name));
 		Available_Type_List.AddRange(_slightlyWeak.Select(x => x.Name));
@@ -44,13 +54,12 @@ public class Type : MonoBehaviour
 			Debug.LogWarning(this.Name+"has type which is not compatible");
 			Debug.LogWarning(Available_Type_List.ToArray());
 			Application.Quit();
-		}
-
+		} */
 	}
 
 	public string Name
 	{
-		get { return transform.name; }
+		get { Initilize(); return transform.name; }
 	}
 
 	public bool IsStrongAgainst(Type type)
