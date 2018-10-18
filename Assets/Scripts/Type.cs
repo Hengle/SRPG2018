@@ -59,7 +59,7 @@ public class Type : MonoBehaviour
 
 	public string Name
 	{
-		get { Initilize(); return transform.name; }
+		get { return transform.name; }
 	}
 
 	public bool IsStrongAgainst(Type type)
