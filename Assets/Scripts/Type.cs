@@ -17,10 +17,10 @@ public class Type : MonoBehaviour
 
 	public void Initilize()
 	{
-		Asset_Type_Array = Resouces.RoadAll("Assets");
+		var Asset_Type_Array = Resouces.RoadAll("Assets");
 		//第二引数にtypeof(GameObject)と書くとアセットの型が指定できる
 
-		Available_Type_List = new List<string>();
+		List<string> Available_Type_List = new List<string>();
 		Available_Type_List.AddRange(_strong.Select(x => x.Name));
 		Available_Type_List.AddRange(_slightlyStrong.Select(x => x.Name));
 		Available_Type_List.AddRange(_slightlyWeak.Select(x => x.Name));
