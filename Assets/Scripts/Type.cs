@@ -29,7 +29,7 @@ public class Type : MonoBehaviour
 		}
 		// === debug end ===
 
-		/*
+		
 		var Available_Type_List = new List<string>();
 		Available_Type_List.AddRange(_strong.Select(x => x.Name));
 		Available_Type_List.AddRange(_slightlyStrong.Select(x => x.Name));
@@ -37,7 +37,7 @@ public class Type : MonoBehaviour
 		Available_Type_List.AddRange(_weak.Select(x => x.Name));
 		//現在ある属性リストの用意
 
-		foreach(var x in Asset_Type_Array)
+		foreach(var x in typeList)
 		{
 			if (Available_Type_List.Ecists(key => key == x.name))
 			{
@@ -54,7 +54,7 @@ public class Type : MonoBehaviour
 			Debug.LogWarning(this.Name+"has type which is not compatible");
 			Debug.LogWarning(Available_Type_List.ToArray());
 			Application.Quit();
-		} */
+		}
 	}
 
 	public string Name
