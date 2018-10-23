@@ -39,7 +39,7 @@ public class Type : MonoBehaviour
 
 		foreach(var x in typeList)
 		{
-			if (Available_Type_List.Ecists(key => key == x.name))
+			if (Available_Type_List.Exists(key => key == x.name))
 			{
 				Available_Type_List.Remove(x.name);
 			}
