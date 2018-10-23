@@ -37,6 +37,8 @@ public class Type : MonoBehaviour
 		Available_Type_List.AddRange(_weak.Select(x => x.Name));
 		//現在ある属性リストの用意
 
+		int QuitFlag=0;
+
 		foreach(var x in typeList)
 		{
 			if (Available_Type_List.Exists(key => key == x.name))
@@ -46,12 +48,17 @@ public class Type : MonoBehaviour
 			else
 			{
 				Debug.LogWarning(x.name+"is not available in "+this.Name);
-				Application.Quit();
+				QuitFlag = 1;
 			}
 		}
-		if(Available_Type_List.Count != 0)
+		if(QuitFlag==1)
 		{
-			Debug.LogWarning(this.Name+"has type which is not compatible");
+			Application.Quit();
+		}
+
+		if (Available_Type_List.Count != 0)
+		{
+			Debug.LogWarning(this.Name + "has type which is not compatible");
 			Debug.LogWarning(Available_Type_List.ToArray());
 			Application.Quit();
 		}
