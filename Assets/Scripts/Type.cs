@@ -22,14 +22,14 @@ public class Type : MonoBehaviour
 		var typeList = Resources.LoadAll<Type>("Prefabs/Types");
 
 		// === 4debug ===
-		Debug.Log("Length = " + typeList.Length);	// 4debug
-		foreach(var item in typeList)
+		Debug.Log("Length = " + typeList.Length);   // 4debug
+		foreach (var item in typeList)
 		{
-			Debug.Log("Asset name = " + item.name);	// 4debug
+			Debug.Log("Asset name = " + item.name); // 4debug
 		}
 		// === debug end ===
 
-		
+
 		var Available_Type_List = new List<string>();
 		Available_Type_List.AddRange(_strong.Select(x => x.Name));
 		Available_Type_List.AddRange(_slightlyStrong.Select(x => x.Name));
@@ -37,9 +37,9 @@ public class Type : MonoBehaviour
 		Available_Type_List.AddRange(_weak.Select(x => x.Name));
 		//現在ある属性リストの用意
 
-		int QuitFlag=0;
+		bool QuitFlag = false;
 
-		foreach(var x in typeList)
+		foreach (var x in typeList)
 		{
 			if (Available_Type_List.Exists(key => key == x.name))
 			{
@@ -47,11 +47,11 @@ public class Type : MonoBehaviour
 			}
 			else
 			{
-				Debug.LogWarning(x.name+"is not available in "+this.Name);
-				QuitFlag = 1;
+				Debug.LogWarning(x.name + "is not available in " + this.Name);
+				QuitFlag = true;
 			}
 		}
-		if(QuitFlag==1)
+		if (QuitFlag == true)
 		{
 			Application.Quit();
 		}
