@@ -29,6 +29,10 @@ public class MoveController : MonoBehaviour
 		get { return _maxLimitCost; }
 	}
 
+	//アニメーターの取得
+	private Animator animator;
+
+
 	/// <summary>
 	/// 各ユニットのポジションによる最大移動量を返す
 	/// </summary>
@@ -90,6 +94,8 @@ public class MoveController : MonoBehaviour
 		return infos.Where(x => x.Value >= 0).ToDictionary(x => x.Key, x => x.Value);
 	}
 
+
+
 	/// <summary>
 	/// ユニットを対象のマスに移動
 	/// </summary>
@@ -99,20 +105,57 @@ public class MoveController : MonoBehaviour
 
 		// 移動先から移動経路を計算
 		var routeFloors = CalculateRouteFloors(map, unit.Floor, destFloor, unit.MoveAmount);
+		//routeFloorsには自信の初期位置からゴールまでの経路情報がある。
 
 		// 移動の際の描画ライブラリインスタンスを初期化
 		var sequence = DOTween.Sequence();
 
+		//アニメーター取得部分
+//		GameObject unit2 = GameObject.Find(unit.Name);
+		animator = unit.GetComponent<Animator>();
+		Debug.Log("default state:"+animator.GetInteger("state")+animator.name);
+
+		//Debug.Log("route[0]:" + routeFloors[0].X + "," + routeFloors[0].Y); //4debug
 		// 移動経路に沿って移動
 		for(var i = 1; i < routeFloors.Length; i++)
 		{
 			var routeFloor = routeFloors[i];
+			//ここから追加コード
+			var presentFloor = routeFloors[i - 1]; //現在位置を取得
+			int dx = routeFloor.X - presentFloor.X;
+			int dy = routeFloor.Y - presentFloor.Y;
+			if (dx == 1)
+			{
+				animator.SetInteger("state", 3);
+			}
+			else if (dx == -1)
+			{
+				animator.SetInteger("state", 2);
+			}
+			else if (dy == 1)
+			{
+				animator.SetInteger("state", 0);
+			}
+			else if (dx == -1)
+			{
+				animator.SetInteger("state", 1);
+			}
+			else
+			{
+				animator.SetInteger("state", 1);
+				Debug.Log("moving dx:"+dx+" dy:"+dy);
+			}
+
+			//Debug.Log(routeFloor.X+","+routeFloor.Y); //4debug
+			Debug.Log("state:" + animator.GetInteger("state")+animator.name); //4debug
+			//ここまで追加コード
 			sequence.Append(unit.transform.DOMove(routeFloor.transform.position, 0.1f).SetEase(Ease.Linear));
 		}
 
 		// 移動が完了したら
 		sequence.OnComplete(() =>
 		{
+			animator.SetInteger("state", 4);
 			// unitのGameObjectの実体の座標も変更する
 			unit.MoveTo(routeFloors[routeFloors.Length - 1].X, routeFloors[routeFloors.Length - 1].Y);
 

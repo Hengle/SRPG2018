@@ -6366,6 +6366,47 @@ Prefab:
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 938aec73980fb344e954ecc51c6204d1, type: 2}
   m_IsPrefabAsset: 0
+--- !u!1 &272533645 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1383603379890704, guid: 938aec73980fb344e954ecc51c6204d1,
+    type: 2}
+  m_PrefabInternal: {fileID: 272533644}
+--- !u!95 &272533646
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 272533645}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: c39ebc54705d71c4a8e9b4e60f27a5bd, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &272533651
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 272533645}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24df22eca87221140a3824aef4b45483, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _forwardMaxMoveAmount: 7
+  _middleMaxMoveAmount: 5
+  _backMaxMoveAmount: 3
+  _normalCost: 1
+  _forestCost: 2
+  _rockCost: 3
+  _maxLimitCost: 999
 --- !u!1 &272955259
 GameObject:
   m_ObjectHideFlags: 0
@@ -25911,9 +25952,55 @@ Prefab:
       value: 
       objectReference: {fileID: 114894019558919166, guid: be1e1761c30e44f49b2ccbde1cded49b,
         type: 2}
+    - target: {fileID: 114909616215669594, guid: f34318d7976686d4babfc9cecc9602d8,
+        type: 2}
+      propertyPath: _name
+      value: mischan
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f34318d7976686d4babfc9cecc9602d8, type: 2}
   m_IsPrefabAsset: 0
+--- !u!1 &1115417672 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1022688145711486, guid: f34318d7976686d4babfc9cecc9602d8,
+    type: 2}
+  m_PrefabInternal: {fileID: 1115417671}
+--- !u!95 &1115417673
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1115417672}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: b58e8be6c2f64ba498979137836e83c6, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &1115417678
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1115417672}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24df22eca87221140a3824aef4b45483, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _forwardMaxMoveAmount: 7
+  _middleMaxMoveAmount: 5
+  _backMaxMoveAmount: 3
+  _normalCost: 1
+  _forestCost: 2
+  _rockCost: 3
+  _maxLimitCost: 999
 --- !u!1 &1121901275
 GameObject:
   m_ObjectHideFlags: 0
@@ -33436,7 +33523,7 @@ Camera:
   m_TargetEye: 3
   m_HDR: 1
   m_AllowMSAA: 1
-  m_AllowDynamicResolution: 0
+  m_AllowDynamicResolution: 1
   m_ForceIntoRT: 0
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
