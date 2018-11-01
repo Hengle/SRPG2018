@@ -78,6 +78,14 @@ public class UI : MonoBehaviour
 		get{ return _rangeAttackNozzle; }
 	}
 
+	/// <summary>
+	/// Caution!) FadeControllerはTouchBlockerにアタッチされている前提で実装しております.
+	/// </summary>
+	public FadeController FadeController
+	{
+		get { return _touchBlocker.GetComponent<FadeController>(); }
+	}
+
 	public void Initialize(Units units, AttackController ac, Map map, BattleStateController bsc)
 	{
 		_popUp.Initialize(this);
@@ -93,6 +101,7 @@ public class UI : MonoBehaviour
 	{
 		if(!_endCommandButton) Debug.LogError("[Error] : EndCommandButton is not set!");
 		if(!_touchBlocker) Debug.LogError("[Error] : Touch Blocker is not set!");
+		if(!FadeController) Debug.LogError("[Error] : FadeController is not attached with Touch Blocker!");
 		if(!_popUp) Debug.LogError("[Error] : PopUP Controller is not set!");
 
 		if(!_turnSetInfoWindow) Debug.LogError("[Error] : TurnSetInfoWindow is not set!");
