@@ -9,7 +9,9 @@ public class CutInPopUp : BasePopUp
 {
 	// 固定値
 	[SerializeField]
-	protected float WaitTime;
+	private float WaitTime;
+	[SerializeField]
+	private GameObject _touchBlocker;
 	[SerializeField]
 	private float _fadeTime;
 	[SerializeField, Range(0, 1f)]
@@ -17,6 +19,13 @@ public class CutInPopUp : BasePopUp
 
 	protected override IEnumerator Move()
 	{
+		if(!_touchBlocker) Debug.LogError("[Error] : TouchBlocker is not set!");
+		if(!_touchBlocker.GetComponent<FadeController>()) Debug.LogError("[Error] : FadeController is not attached!");
+
+		// _fadeOutAlphaLimitまで_fadeTime秒でフェードアウト
+		_touchBlocker.SetActive(true);
+		StartCoroutine(_touchBlocker.GetComponent<FadeController>().StartFadeOut(_fadeTime, _fadeOutAlphaLimit));
+
 		float time = 0f;
 		float moveTime = (existTime - WaitTime) / 2;
 
@@ -47,5 +56,9 @@ public class CutInPopUp : BasePopUp
 			yield return null;
 			time += Time.deltaTime;
 		}
+
+		// _fadeTime秒で元のアルファまでフェードイン
+		StartCoroutine(_touchBlocker.GetComponent<FadeController>().StartFadeInDefault(_fadeTime));
+		_touchBlocker.SetActive(false);
 	}
 }

@@ -29863,6 +29863,21 @@ Prefab:
       propertyPath: _ui
       value: 
       objectReference: {fileID: 1150024740}
+    - target: {fileID: 114209386783998754, guid: 9d772d5b69f90df46881141ee5c2903f,
+        type: 2}
+      propertyPath: _fc
+      value: 
+      objectReference: {fileID: 1395844257}
+    - target: {fileID: 114209386783998754, guid: 9d772d5b69f90df46881141ee5c2903f,
+        type: 2}
+      propertyPath: _fadeOutAlphaLimit
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 114209386783998754, guid: 9d772d5b69f90df46881141ee5c2903f,
+        type: 2}
+      propertyPath: _fadeTime
+      value: 0.5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9d772d5b69f90df46881141ee5c2903f, type: 2}
   m_IsPrefabAsset: 0
@@ -32217,6 +32232,7 @@ GameObject:
   - component: {fileID: 1395844256}
   - component: {fileID: 1395844255}
   - component: {fileID: 1395844254}
+  - component: {fileID: 1395844257}
   m_Layer: 5
   m_Name: TouchBlocker
   m_TagString: Untagged
@@ -32317,6 +32333,17 @@ CanvasRenderer:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1395844252}
   m_CullTransparentMesh: 0
+--- !u!114 &1395844257
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1395844252}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 891eb043bf524dd429dbe0a7cf68534b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1396726429
 GameObject:
   m_ObjectHideFlags: 0

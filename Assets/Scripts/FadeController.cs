@@ -11,11 +11,27 @@ public class FadeController : MonoBehaviour
 	private Color _currentColor;
 
 	/// <summary>
+	/// アルファをいじる対象の元の色
+	/// </summary>
+	private Color _defaultColor;
+
+	/// <summary>
 	/// 初期化メソッド
 	/// </summary>
 	public void Initalize()
 	{
-		_currentColor = GetComponent<Image>().color;
+		_defaultColor = GetComponent<Image>().color;
+		_currentColor = _defaultColor;
+	}
+
+	/// <summary>
+	/// ゲーム開始時のアルファまでフェードインを開始するメソッド
+	/// </summary>
+	/// <param name="time"></param>
+	/// <returns></returns>
+	public IEnumerator StartFadeInDefault(float time)
+	{
+		return StartFadeIn(time, _defaultColor.a);
 	}
 
 	/// <summary>
@@ -25,6 +41,8 @@ public class FadeController : MonoBehaviour
 	/// <returns></returns>
 	public IEnumerator StartFadeIn(float time, float alphaLimit)
 	{
+		Debug.Log("[Debug] : Fade In Called!"); // 4debug
+
 		var alphaDistance = _currentColor.a - alphaLimit;
 		while(_currentColor.a > alphaLimit)
 		{
@@ -34,12 +52,24 @@ public class FadeController : MonoBehaviour
 	}
 
 	/// <summary>
+	/// ゲーム開始時のアルファまでフェードアウトを開始するメソッド
+	/// </summary>
+	/// <param name="time"></param>
+	/// <returns></returns>
+	public IEnumerator StartFadeOutDefault(float time)
+	{
+		return StartFadeOut(time, _defaultColor.a);
+	}
+
+	/// <summary>
 	/// フェードアウトを開始するメソッド
 	/// </summary>
 	/// <param name="time"></param>
 	/// <returns></returns>
 	public IEnumerator StartFadeOut(float time, float alphaLimit)
 	{
+		Debug.Log("[Debug] : Fade Out Called!"); // 4debug
+
 		var alphaDistance = alphaLimit - _currentColor.a;
 		while(_currentColor.a < alphaLimit)
 		{
