@@ -113,7 +113,11 @@ public class MoveController : MonoBehaviour
 		//アニメーター取得部分
 //		GameObject unit2 = GameObject.Find(unit.Name);
 		animator = unit.GetComponent<Animator>();
-		Debug.Log("default state:"+animator.GetInteger("state")+animator.name);
+		if (animator == null)
+		{
+			Debug.LogWarning("[Debug] noanimator");
+		}
+		Debug.Log("[Debug] default state:"+animator.GetInteger("state")+" unit name = "+animator.name); //4debug
 
 		//Debug.Log("route[0]:" + routeFloors[0].X + "," + routeFloors[0].Y); //4debug
 		// 移動経路に沿って移動
@@ -121,33 +125,35 @@ public class MoveController : MonoBehaviour
 		{
 			var routeFloor = routeFloors[i];
 			//ここから追加コード
-			var presentFloor = routeFloors[i - 1]; //現在位置を取得
-			int dx = routeFloor.X - presentFloor.X;
-			int dy = routeFloor.Y - presentFloor.Y;
-			if (dx == 1)
-			{
-				animator.SetInteger("state", 3);
-			}
-			else if (dx == -1)
-			{
-				animator.SetInteger("state", 2);
-			}
-			else if (dy == 1)
-			{
-				animator.SetInteger("state", 0);
-			}
-			else if (dx == -1)
-			{
-				animator.SetInteger("state", 1);
-			}
-			else
-			{
-				animator.SetInteger("state", 1);
-				Debug.Log("moving dx:"+dx+" dy:"+dy);
-			}
+			//var presentFloor = routeFloors[i - 1]; //現在位置を取得
+			//int dx = routeFloor.X - presentFloor.X;
+			//int dy = routeFloor.Y - presentFloor.Y;
+			//if (dx == 1)
+			//{
+			//	animator.SetInteger("state", 3);
+			//}
+			//else if (dx == -1)
+			//{
+			//	animator.SetInteger("state", 2);
+			//}
+			//else if (dy == 1)
+			//{
+			//	animator.SetInteger("state", 0);
+			//}
+			//else if (dx == -1)
+			//{
+			//	animator.SetInteger("state", 1);
+			//}
+			//else
+			//{
+			//	animator.SetInteger("state", 1);
+			//	Debug.Log("moving dx:"+dx+" dy:"+dy);
+			//}
+
+			animator.SetInteger("state", 2); //4debug
 
 			//Debug.Log(routeFloor.X+","+routeFloor.Y); //4debug
-			Debug.Log("state:" + animator.GetInteger("state")+animator.name); //4debug
+			Debug.Log("[Debug] state:" + animator.GetInteger("state")+" unit name ="+animator.name); //4debug
 			//ここまで追加コード
 			sequence.Append(unit.transform.DOMove(routeFloor.transform.position, 0.1f).SetEase(Ease.Linear));
 		}

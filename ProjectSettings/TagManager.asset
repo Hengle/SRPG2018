@@ -45,6 +45,9 @@ TagManager:
   - name: Feild
     uniqueID: 4201756549
     locked: 0
+  - name: Sprite
+    uniqueID: 1249158073
+    locked: 0
   - name: Unit
     uniqueID: 1710757723
     locked: 0
