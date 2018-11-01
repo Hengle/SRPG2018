@@ -10,6 +10,10 @@ public class CutInPopUp : BasePopUp
 	// 固定値
 	[SerializeField]
 	protected float WaitTime;
+	[SerializeField]
+	private float _fadeTime;
+	[SerializeField, Range(0, 1f)]
+	private float _fadeOutAlphaLimit;
 
 	protected override IEnumerator Move()
 	{
