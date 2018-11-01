@@ -80,6 +80,7 @@ public class UI : MonoBehaviour
 
 	public void Initialize(Units units, AttackController ac, Map map, BattleStateController bsc)
 	{
+		_popUp.Initialize(this);
 		_rangeAttackNozzle.Initialize(ac, units, map, bsc);
 		_attackSelectWindow.Initialize(units, ac, _rangeAttackNozzle, _attackInfoWindow, map);
 	}
@@ -92,6 +93,7 @@ public class UI : MonoBehaviour
 	{
 		if(!_endCommandButton) Debug.LogError("[Error] : EndCommandButton is not set!");
 		if(!_touchBlocker) Debug.LogError("[Error] : Touch Blocker is not set!");
+		if(!_popUp) Debug.LogError("[Error] : PopUP Controller is not set!");
 
 		if(!_turnSetInfoWindow) Debug.LogError("[Error] : TurnSetInfoWindow is not set!");
 		_turnSetInfoWindow.CheckSerializedMember();

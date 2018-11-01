@@ -20,12 +20,12 @@ public abstract class BasePopUp : MonoBehaviour
 	// 変数
 	protected Image _image;
 	protected Text _text;
-	
+
 	/// <summary>
 	/// ポップアップの初期設定をした後、動作させます
 	/// </summary>
 	/// <param name="text">表示したい文章</param>
-	public void Initial(string text)
+	public void Initialize(string text)
 	{
 		gameObject.SetActive(true);
 
@@ -34,7 +34,7 @@ public abstract class BasePopUp : MonoBehaviour
 		// テキストと背景画像の準備
 		SetUpText(text);
 		SetUpImage();
-		
+
 		// 動作開始
 		StartCoroutine(Act());
 	}

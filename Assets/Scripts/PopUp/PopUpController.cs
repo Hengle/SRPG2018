@@ -8,18 +8,26 @@ using System.Collections;
 /// - Image(背景画像)
 /// - DamagePopUp.cs
 /// - CutInPopUp.cs
-/// 
+///
 /// 子オブジェクトにアタッチしていると想定しているもの
 /// - Text (名称:Text)
-/// 
+///
 /// これさえ守れば、PopUpFactory(現在これを実現しているprefab)は
 /// Hierarchy上のどこでも動きます。
 /// </summary>
 public class PopUpController : MonoBehaviour
 {
-	[SerializeField]
 	private UI _ui;
-	
+
+	/// <summary>
+	/// 初期化メソッド
+	/// </summary>
+	/// <param name="ui"></param>
+	public void Initialize(UI ui)
+	{
+		_ui = ui;
+	}
+
 	/// <summary>
 	/// ダメージのポップアップを作ります
 	/// </summary>
@@ -31,7 +39,7 @@ public class PopUpController : MonoBehaviour
 
 		string text = damage.ToString();
 
-		popUp.GetComponent<DamagePopUp>().Initial(text);
+		popUp.GetComponent<DamagePopUp>().Initialize(text);
 	}
 
 	public void CreateCutInPopUp(Unit.Team team)
@@ -40,6 +48,6 @@ public class PopUpController : MonoBehaviour
 
 		string text = "=== " + team.ToString() + " Order ===";
 
-		popUp.GetComponent<CutInPopUp>().Initial(text);
+		popUp.GetComponent<CutInPopUp>().Initialize(text);
 	}
 }
