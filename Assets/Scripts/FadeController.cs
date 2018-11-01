@@ -1,95 +1,150 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class FadeController : MonoBehaviour
 {
-	[SerializeField]
-	private float fadeInSpeedSecond; // fade in speed [sec]
-	[SerializeField]
-	private float fadeOutSpeedSecond; // fade out speed [sec]
-	public bool isFadeIn;
-	public bool isFadeOut;
+	// フェードイン中か否かを表すフラグ
+	private bool _isFadeIn;
 
-	private float _fadeInTime;
-	private float _fadeOutTime;
-	private static int _oneFrame = 60;  // 1 [min] = 60 [F]
-	private Image _fadeImage;
-	private float _red, _green, _blue, _alfa;   //パネルの色、不透明度を管理
+	// フェードアウト中か否かを表すフラグ
+	private bool _isFadeOut;
 
+	/// <summary>
+	/// フェードが完了するまでの時間 [秒]
+	/// </summary>
+	private float _fadeSpeedSecond;
 
-	// Use this for initialization
-	void Start()
+	/// <summary>
+	/// アルファ値の下限 (初期値)
+	/// </summary>
+	private float _fadeAlphaLowerLimit;
+
+	/// <summary>
+	/// フェードアウト時のアルファ値の上限 (0 ~ 1の間)
+	/// </summary>
+	private float _fadeAlphaUpperLimit;
+
+	// フェード開始からの
+	private float _accumulatedFadeTime;
+
+	/// <summary>
+	/// アルファをいじる対象の現在の色
+	/// </summary>
+	private Color _currentColor;
+
+	/// <summary>
+	/// 初期化メソッド
+	/// </summary>
+	public void Initalize()
 	{
-		_fadeInTime = 0;
-		_fadeOutTime = 0;
-		_fadeImage = GetComponent<Image>();
-		_red = _fadeImage.color.r;
-		_green = _fadeImage.color.g;
-		_blue = _fadeImage.color.b;
-		_alfa = _fadeImage.color.a;
-		if(isFadeIn && fadeInSpeedSecond > 0)
+		_currentColor = GetComponent<Image>().color;
+		_fadeAlphaLowerLimit = GetComponent<Image>().color.a;
+	}
+
+	/// <summary>
+	/// フェードインを開始するメソッド
+	/// </summary>
+	/// <param name="time"></param>
+	public void StartFadeIn(float time)
+	{
+		// 4debug
+		if(_isFadeOut) Debug.LogError("[Error] : Fade in started while fading out!");
+		if(_currentColor.a <= _fadeAlphaLowerLimit) Debug.LogError("[Error] : Not need to fade in!");
+
+		_fadeSpeedSecond = time;
+		_isFadeIn = true;
+	}
+
+	/// <summary>
+	/// フェードアウトを開始するメソッド
+	/// </summary>
+	/// <param name="time"></param>
+	/// <param name="alphaUpperLimit"></param>
+	public void StartFadeOut(float time, float alphaUpperLimit)
+	{
+		// 4debug
+		if(_isFadeIn) Debug.LogError("[Error] : Fade out started while fading in!");
+		if(alphaUpperLimit < 0 || alphaUpperLimit > 1f) Debug.LogError("[Error] : Fade out alpha upper limit value is over!");
+		if(_currentColor.a >= _fadeAlphaUpperLimit) Debug.LogError("[Error] : Not need to fade out!");
+
+		// フェードが完了するまでの時間を更新
+		_fadeSpeedSecond = time;
+
+		// アルファ上限を設定
+		_fadeAlphaUpperLimit = alphaUpperLimit;
+
+		// フェードアウト開始
+		_isFadeOut = true;
+	}
+
+	/// <summary>
+	/// Update is called once per frame
+	/// </summary>
+	private void Update()
+	{
+		// フェードイン中であればアルファを減少させる.
+		if(_isFadeIn)
 		{
-			_fadeImage.enabled = true;
-			StartFadeIn();
+			UpdateFadeInAlpha();
 		}
-		else
+
+		// フェードアウト中であればアルファを増加させる.
+		if(_isFadeOut)
 		{
-			_fadeImage.enabled = false;
-			_alfa = 0.0f;
-			SetAlpha();
+			UpdateFadeOutAlpha();
 		}
 	}
 
-	// Update is called once per frame
-	void Update()
+	/// <summary>
+	/// フェードイン中にアルファを更新するメソッド
+	/// </summary>
+	private void UpdateFadeInAlpha()
 	{
-		if(isFadeIn && fadeInSpeedSecond > 0 && !isFadeOut)
-		{
-			_fadeInTime = 0;
-			StartFadeIn();
-		}
+		// 1フレームあたりのアルファ減少量を計算し, 更新.
+		UpdateAlpha(GetAlphaDifferencePerFrame(), (currentAlpha, difference) => currentAlpha - difference);
 
-		if(isFadeOut && fadeOutSpeedSecond > 0 && !isFadeIn)
+		// アルファ値の下限を下回ったらフェードインを終了.
+		if(_currentColor.a <= _fadeAlphaLowerLimit)
 		{
-			_fadeOutTime = 0;
-			StartFadeOut();
-		}
-	}
-
-	void StartFadeIn()
-	{
-		_fadeInTime += Time.deltaTime;
-		// decrease the alfa value on 1 [F].
-		_alfa -= _fadeInTime / fadeInSpeedSecond;
-		SetAlpha();
-		_fadeInTime = 0;
-
-		if(_alfa <= 0)
-		{
-			isFadeIn = false;
-			_fadeImage.enabled = false;
+			_isFadeIn = false;
 		}
 	}
 
-	void StartFadeOut()
+	/// <summary>
+	/// フェードアウト中にアルファを更新するメソッド
+	/// </summary>
+	private void UpdateFadeOutAlpha()
 	{
-		_fadeOutTime += Time.deltaTime;
-		_fadeImage.enabled = true;
-		// increase the alfa value on 1 [F].
-		_alfa += _fadeOutTime / fadeOutSpeedSecond;
-		SetAlpha();
-		_fadeOutTime = 0;
+		// 1フレームあたりのアルファ減少量を計算し, 更新.
+		UpdateAlpha(GetAlphaDifferencePerFrame(), (currentAlpha, difference) => currentAlpha + difference);
 
-		if(_alfa >= 1)
+		// アルファ値の上限を上回ったらフェードアウトを終了.
+		if(_currentColor.a >= _fadeAlphaUpperLimit)
 		{
-			isFadeOut = false;
+			_isFadeOut = false;
 		}
 	}
 
-	void SetAlpha()
+	/// <summary>
+	/// 1フレームあたりのアルファ差分を計算するメソッド
+	/// </summary>
+	/// <returns></returns>
+	private float GetAlphaDifferencePerFrame()
 	{
-		_fadeImage.color = new Color(_red, _green, _blue, _alfa);
+		// AlphaDistancePreFrame [-/F]
+		// = AlphaDistance [-] / (_fadeSpeedSecond [s] * FramePerSecond [F/s])
+		// = AlphaDistance [-] * deltaTime [s/F] / _fadeSpeedSecond [s]
+		return (_fadeAlphaUpperLimit - _fadeAlphaLowerLimit) * Time.deltaTime / _fadeSpeedSecond;
+	}
+
+	/// <summary>
+	/// updaterで定義した方法で, colorのalphaを更新するメソッド
+	/// </summary>
+	/// <param name="alpha"></param>
+	/// <param name="updater"></param>
+	private void UpdateAlpha(float alpha, Func<float, float, float> updater)
+	{
+		_currentColor = new Color(_currentColor.r, _currentColor.g, _currentColor.b, updater(_currentColor.a, alpha));
 	}
 }
