@@ -30,7 +30,7 @@ public class MoveController : MonoBehaviour
 	}
 
 	//アニメーターの取得
-	private Animator animator;
+	//private Animator animator;
 
 
 	/// <summary>
@@ -94,7 +94,12 @@ public class MoveController : MonoBehaviour
 		return infos.Where(x => x.Value >= 0).ToDictionary(x => x.Key, x => x.Value);
 	}
 
-
+	//現在使っている画像
+	private Image image;
+	private string vector;
+	private Unit targetUnit;
+	private string unit_name;
+	private bool moveflag = false;
 
 	/// <summary>
 	/// ユニットを対象のマスに移動
@@ -112,12 +117,12 @@ public class MoveController : MonoBehaviour
 
 		//アニメーター取得部分
 //		GameObject unit2 = GameObject.Find(unit.Name);
-		animator = unit.GetComponent<Animator>();
-		if (animator == null)
-		{
-			Debug.LogWarning("[Debug] noanimator");
-		}
-		Debug.Log("[Debug] default state:"+animator.GetInteger("state")+" unit name = "+animator.name); //4debug
+		//animator = unit.GetComponent<Animator>();
+		//if (animator == null)
+		//{
+		//	Debug.LogWarning("[Debug] noanimator");
+		//}
+		//Debug.Log("[Debug] default state:"+animator.GetInteger("state")+" unit name = "+animator.name); //4debug
 
 		//Debug.Log("route[0]:" + routeFloors[0].X + "," + routeFloors[0].Y); //4debug
 		// 移動経路に沿って移動
@@ -125,43 +130,66 @@ public class MoveController : MonoBehaviour
 		{
 			var routeFloor = routeFloors[i];
 			//ここから追加コード
-			//var presentFloor = routeFloors[i - 1]; //現在位置を取得
-			//int dx = routeFloor.X - presentFloor.X;
-			//int dy = routeFloor.Y - presentFloor.Y;
-			//if (dx == 1)
-			//{
-			//	animator.SetInteger("state", 3);
-			//}
-			//else if (dx == -1)
-			//{
-			//	animator.SetInteger("state", 2);
-			//}
-			//else if (dy == 1)
-			//{
-			//	animator.SetInteger("state", 0);
-			//}
-			//else if (dx == -1)
-			//{
-			//	animator.SetInteger("state", 1);
-			//}
-			//else
-			//{
-			//	animator.SetInteger("state", 1);
-			//	Debug.Log("moving dx:"+dx+" dy:"+dy);
-			//}
+			var presentFloor = routeFloors[i - 1]; //現在位置を取得
+			int dx = routeFloor.X - presentFloor.X;
+			int dy = routeFloor.Y - presentFloor.Y;
+			if (dx == 1)
+			{
+				vector = "right";
+				//animator.SetInteger("state", 3);
+			}
+			else if (dx == -1)
+			{
+				vector = "left";
+				//animator.SetInteger("state", 2);
+			}
+			else if (dy == 1)
+			{
+				vector = "usiro";
+				//animator.SetInteger("state", 0);
+			}
+			else if (dy == -1)
+			{
+				vector = "mae";
+				//animator.SetInteger("state", 1);
+			}
+			else
+			{
+				//animator.SetInteger("state", 1);
+				//Debug.Log("moving dx:" + dx + " dy:" + dy);
+			}
 
-			animator.SetInteger("state", 2); //4debug
+			image = unit.GetComponent<Image>();
+			if (image == null)
+			{
+				Debug.Log("[Debug] targetImage is null");
+			}
+			else
+			{
+				Debug.Log("[Debug] " + image.name);
+			}
+
+
+			targetUnit = unit;
+			vector = "mae";
+			unit_name = unit.name;
+			moveflag = true;
+			StartCoroutine("MakeAnimation");
+
+//			animator.SetInteger("state", 2); //4debug
 
 			//Debug.Log(routeFloor.X+","+routeFloor.Y); //4debug
-			Debug.Log("[Debug] state:" + animator.GetInteger("state")+" unit name ="+animator.name); //4debug
+			//Debug.Log("[Debug] state:" + animator.GetInteger("state")+" unit name ="+animator.name); //4debug
 			//ここまで追加コード
 			sequence.Append(unit.transform.DOMove(routeFloor.transform.position, 0.1f).SetEase(Ease.Linear));
+			moveflag = false;
+			//image.sprite = Resources.Load<Sprite>("Characters/suisei_default/onp_m");
 		}
 
 		// 移動が完了したら
 		sequence.OnComplete(() =>
 		{
-			animator.SetInteger("state", 4);
+			//animator.SetInteger("state", 4);
 			// unitのGameObjectの実体の座標も変更する
 			unit.MoveTo(routeFloors[routeFloors.Length - 1].X, routeFloors[routeFloors.Length - 1].Y);
 
@@ -178,6 +206,25 @@ public class MoveController : MonoBehaviour
 			}
 			*/
 		});
+	}
+
+	public IEnumerator MakeAnimation()
+	{
+		//if(image.sprite == null)
+		//{
+		//	moveflag = false;
+		//	yield break;
+		//}
+		while (moveflag)
+		{
+			image.sprite = Resources.Load<Sprite>("Characters/suisei_default/" + vector+"_1");
+			yield return new WaitForSeconds(0.5f);
+			image.sprite = Resources.Load<Sprite>("Characters/suisei_default/" + vector + "_2");
+			yield return new WaitForSeconds(0.5f);
+
+		}
+
+
 	}
 
 	/// <summary>
