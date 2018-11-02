@@ -81,15 +81,15 @@ public class UI : MonoBehaviour
 	/// <summary>
 	/// Caution!) FadeControllerはTouchBlockerにアタッチされている前提で実装しております.
 	/// </summary>
-	public FadeController FadeController
+	public PlayerChangeEffect PlayerChangeEffect
 	{
-		get { return _touchBlocker.GetComponent<FadeController>(); }
+		get { return _touchBlocker.GetComponent<PlayerChangeEffect>(); }
 	}
 
 	public void Initialize(Units units, AttackController ac, Map map, BattleStateController bsc)
 	{
 		_popUp.Initialize(this);
-		FadeController.Initalize();
+		PlayerChangeEffect.Initialize(this, _popUp);
 		_rangeAttackNozzle.Initialize(ac, units, map, bsc);
 		_attackSelectWindow.Initialize(units, ac, _rangeAttackNozzle, _attackInfoWindow, map);
 	}
@@ -102,7 +102,7 @@ public class UI : MonoBehaviour
 	{
 		if(!_endCommandButton) Debug.LogError("[Error] : EndCommandButton is not set!");
 		if(!_touchBlocker) Debug.LogError("[Error] : Touch Blocker is not set!");
-		if(!FadeController) Debug.LogError("[Error] : FadeController is not attached with Touch Blocker!");
+		if(!PlayerChangeEffect) Debug.LogError("[Error] : FadeController is not attached with Touch Blocker!");
 		if(!_popUp) Debug.LogError("[Error] : PopUP Controller is not set!");
 
 		if(!_turnSetInfoWindow) Debug.LogError("[Error] : TurnSetInfoWindow is not set!");

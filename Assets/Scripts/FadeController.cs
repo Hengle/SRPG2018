@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class FadeController : MonoBehaviour
+public class FadeController
 {
 	/// <summary>
 	/// アルファを弄る対象の現在の色
@@ -16,11 +16,12 @@ public class FadeController : MonoBehaviour
 	private Color _defaultColor;
 
 	/// <summary>
-	/// 初期化メソッド
+	/// コンストラクタ
 	/// </summary>
-	public void Initalize()
+	/// <param name="fadeImage"></param>
+	public FadeController(Image fadeImage)
 	{
-		_fadeImage = GetComponent<Image>();
+		_fadeImage = fadeImage;
 		_defaultColor = _fadeImage.color;
 	}
 
@@ -54,16 +55,11 @@ public class FadeController : MonoBehaviour
 	{
 		var alphaDistance = _fadeImage.color.a - alphaLimit;
 
-		// フェードアウトできるならば, TouchBlockerを有効にする.
-		if(alphaDistance > 0)
+		while(_fadeImage.color.a > alphaLimit)
 		{
-			while(_fadeImage.color.a > alphaLimit)
-			{
-				_fadeImage.color -= new Color(0, 0, 0, GetAlphaDistancePerFrame(alphaDistance, time));
-				Debug.Log("[Debug] : Fade In Updated! as " + _fadeImage.color.a); // 4debug
-				yield return null;
-			}
-			gameObject.SetActive(false);
+			_fadeImage.color -= new Color(0, 0, 0, GetAlphaDistancePerFrame(alphaDistance, time));
+			Debug.Log("[Debug] : Fade In Updated! as " + _fadeImage.color.a); // 4debug
+			yield return null;
 		}
 	}
 
@@ -77,16 +73,11 @@ public class FadeController : MonoBehaviour
 	{
 		var alphaDistance = alphaLimit - _fadeImage.color.a;
 
-		// フェードアウトできるならば, TouchBlockerを有効にする.
-		if(alphaDistance > 0)
+		while(_fadeImage.color.a < alphaLimit)
 		{
-			gameObject.SetActive(true);
-			while(_fadeImage.color.a < alphaLimit)
-			{
-				_fadeImage.color += new Color(0, 0, 0, GetAlphaDistancePerFrame(alphaDistance, time));
-				Debug.Log("[Debug] : Fade Out Updated! as " + _fadeImage.color.a); // 4debug
-				yield return null;
-			}
+			_fadeImage.color += new Color(0, 0, 0, GetAlphaDistancePerFrame(alphaDistance, time));
+			Debug.Log("[Debug] : Fade Out Updated! as " + _fadeImage.color.a); // 4debug
+			yield return null;
 		}
 	}
 

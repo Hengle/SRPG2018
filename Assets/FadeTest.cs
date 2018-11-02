@@ -13,7 +13,6 @@ public class FadeTest : MonoBehaviour
 
 	private void Start()
 	{
-		_fadePanel.GetComponent<FadeController>().Initalize();
 		StartCoroutine(_fadePanel.GetComponent<FadeController>().FadeOut(3f, 1f));
 		Debug.Log("finished Fade Out");
 	}

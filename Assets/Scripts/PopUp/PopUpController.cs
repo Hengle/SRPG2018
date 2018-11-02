@@ -48,10 +48,8 @@ public class PopUpController : MonoBehaviour
 	/// <param name="team"></param>
 	public void CreateCutInPopUp(Unit.Team team)
 	{
-		// var popUp = Instantiate(gameObject, _ui.transform);
-
 		string text = "=== " + team.ToString() + " Order ===";
 
-		_ui.TouchBlocker.GetComponent<CutInPopUp>().Initialize(text, _ui.FadeController);
+		_ui.TouchBlocker.GetComponent<CutInPopUp>().Initialize(text);
 	}
 }

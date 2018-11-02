@@ -11,30 +11,9 @@ public class CutInPopUp : BasePopUp
 	// 固定値
 	[SerializeField]
 	private float _waitTime;
-	[SerializeField]
-	private float _fadeTime;
-	[SerializeField, Range(0, 1f)]
-	private float _fadeOutAlphaLimit;
-
-	private FadeController _fc;
-
-	/// <summary>
-	/// 継承側のInitializeメソッド
-	/// </summary>
-	/// <param name="text"></param>
-	public void Initialize(string text, FadeController fc)
-	{
-		_fc = fc;
-		Initialize(text);
-
-		StartCoroutine(RunCoroutine());
-	}
 
 	protected override IEnumerator PopUpMove()
 	{
-		if(!_fc) Debug.LogError("[Error] : TouchBlocker is not set!");
-		if(!_fc.GetComponent<FadeController>()) Debug.LogError("[Error] : FadeController is not attached!");
-
 		Debug.Log("Move Called and call StartFadeOutDefault Coroutine");	// 4debug
 		// _fadeOutAlphaLimitまで_fadeTime秒でフェードアウト
 
@@ -70,29 +49,5 @@ public class CutInPopUp : BasePopUp
 			yield return null;
 			time += Time.deltaTime;
 		}
-	}
-
-	public override IEnumerator RunCoroutine()
-	{
-		// TouchBlockerを有効化
-		gameObject.SetActive(true);
-
-		// _fadetime秒でフェードアウト
-		yield return StartCoroutine(_fc.FadeOut(_fadeTime, 0.8f));
-
-		// Textを有効化
-		GetComponent<Text>().gameObject.SetActive(true);
-
-		// Act()を実行
-		yield return StartCoroutine(Act());
-
-		// Textを無効化
-		GetComponent<Text>().gameObject.SetActive(false);
-
-		// _fadetime秒でフェードイン
-		yield return StartCoroutine(_fc.FadeIn(_fadeTime));
-
-		// TouchBlockerを無効化
-		gameObject.SetActive(false);
 	}
 }

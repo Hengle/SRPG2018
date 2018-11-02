@@ -57,12 +57,5 @@ public class DamagePopUp : BasePopUp
 	public new void Initialize(string text)
 	{
 		base.Initialize(text);
-
-		StartCoroutine(RunCoroutine());
-	}
-
-	public override IEnumerator RunCoroutine()
-	{
-		yield return StartCoroutine(Act());
 	}
 }

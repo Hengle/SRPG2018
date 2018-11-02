@@ -21,7 +21,7 @@ public abstract class BasePopUp : MonoBehaviour
 	/// ポップアップの初期設定をした後、動作させます
 	/// </summary>
 	/// <param name="text">表示したい文章</param>
-	protected void Initialize(string text)
+	public void Initialize(string text)
 	{
 		gameObject.SetActive(true);
 
@@ -74,9 +74,4 @@ public abstract class BasePopUp : MonoBehaviour
 	/// </summary>
 	/// <returns></returns>
 	protected abstract IEnumerator PopUpMove();
-
-	/// <summary>
-	/// コルーチンの実行メソッド
-	/// </summary>
-	public abstract IEnumerator RunCoroutine();
 }
