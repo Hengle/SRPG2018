@@ -13,7 +13,8 @@ public class FadeTest : MonoBehaviour
 
 	private void Start()
 	{
-		_fadePanel.GetComponent<FadeController>().StartFadeOut(3f, 1f);
+		_fadePanel.GetComponent<FadeController>().Initalize();
+		StartCoroutine(_fadePanel.GetComponent<FadeController>().FadeOut(3f, 1f));
 		Debug.Log("finished Fade Out");
 	}
 
@@ -65,6 +66,5 @@ public class FadeTest : MonoBehaviour
 		Debug.Log("CoroutineB created.");
 		yield return new WaitForSeconds(2.5f);
 		Debug.Log("CoroutineB enables CoroutineA to run.");
-
 	}
 }

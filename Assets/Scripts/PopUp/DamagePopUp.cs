@@ -17,7 +17,7 @@ public class DamagePopUp : BasePopUp
 	// 固定値
 	[SerializeField]
 	protected float floatingHeight;
-	
+
 	/// <summary>
 	/// 放物線を描いた時の高さを求めます
 	/// </summary>
@@ -29,21 +29,21 @@ public class DamagePopUp : BasePopUp
 		float b = floatingHeight;
 
 		float alpha = 4 * b / (a * a);
-		Debug.Log("alpha"+alpha);
+		Debug.Log("alpha" + alpha);
 		return -alpha * Mathf.Pow(time - a / 2, 2) + b;
 	}
-	
+
 	/// <summary>
 	/// 基本動作:放物線のように高さを決める
 	/// </summary>
 	/// <returns></returns>
-	protected override IEnumerator Move()
+	protected override IEnumerator PopUpMove()
 	{
 		float time = 0f;
 
 		Vector3 now = new Vector3(0, 0, 0);
 
-		while(time<existTime)
+		while(time < existTime)
 		{
 			now.y = CalcHeight(time);
 
@@ -52,5 +52,17 @@ public class DamagePopUp : BasePopUp
 			yield return null;
 			time += Time.deltaTime;
 		}
+	}
+
+	public new void Initialize(string text)
+	{
+		base.Initialize(text);
+
+		StartCoroutine(RunCoroutine());
+	}
+
+	public override IEnumerator RunCoroutine()
+	{
+		yield return StartCoroutine(Act());
 	}
 }

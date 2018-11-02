@@ -6,12 +6,12 @@ using UnityEngine.UI;
 public class FadeController : MonoBehaviour
 {
 	/// <summary>
-	/// アルファをいじる対象の現在の色
+	/// アルファを弄る対象の現在の色
 	/// </summary>
-	private Color _currentColor;
+	private Image _fadeImage;
 
 	/// <summary>
-	/// アルファをいじる対象の元の色
+	/// アルファを弄る対象の元の色
 	/// </summary>
 	private Color _defaultColor;
 
@@ -20,67 +20,28 @@ public class FadeController : MonoBehaviour
 	/// </summary>
 	public void Initalize()
 	{
-		_defaultColor = GetComponent<Image>().color;
-		_currentColor = _defaultColor;
+		_fadeImage = GetComponent<Image>();
+		_defaultColor = _fadeImage.color;
 	}
 
 	/// <summary>
-	/// ゲーム開始時のアルファまでフェードインを開始するメソッド
+	/// alpha set by default
 	/// </summary>
 	/// <param name="time"></param>
 	/// <returns></returns>
-	public void StartFadeInDefault(float time)
+	public IEnumerator FadeIn(float time)
 	{
-		StartFadeIn(time, _defaultColor.a);
+		return FadeIn(time, _defaultColor.a);
 	}
 
 	/// <summary>
-	/// フェードインを開始するメソッド
+	/// alpha set by default
 	/// </summary>
 	/// <param name="time"></param>
 	/// <returns></returns>
-	public void StartFadeIn(float time, float alphaLimit)
+	public IEnumerator FadeOut(float time)
 	{
-		var alphaDistance = _currentColor.a - alphaLimit;
-
-		// フェードアウトできるならば, TouchBlockerを有効にする.
-		if(alphaDistance > 0)
-		{
-			StartCoroutine(FadeCoroutine(FadeIn, GetAlphaDistancePerFrame(alphaDistance, time), alphaLimit));
-			gameObject.SetActive(false);
-		}
-	}
-
-	/// <summary>
-	/// ゲーム開始時のアルファまでフェードアウトを開始するメソッド
-	/// </summary>
-	/// <param name="time"></param>
-	/// <returns></returns>
-	public void StartFadeOutDefault(float time)
-	{
-		StartFadeOut(time, _defaultColor.a);
-	}
-
-	/// <summary>
-	/// フェードアウトを開始するメソッド
-	/// </summary>
-	/// <param name="time"></param>
-	/// <returns></returns>
-	public void StartFadeOut(float time, float alphaLimit)
-	{
-		var alphaDistance = alphaLimit - _currentColor.a;
-
-		// フェードアウトできるならば, TouchBlockerを有効にする.
-		if(alphaDistance > 0)
-		{
-			gameObject.SetActive(true);
-			StartCoroutine(FadeCoroutine(FadeOut, GetAlphaDistancePerFrame(alphaDistance, time), alphaLimit));
-		}
-	}
-
-	private IEnumerator FadeCoroutine(Func<float, float, IEnumerator> fadeFunc, float alphaDistancePerFrame, float time)
-	{
-		yield return StartCoroutine(fadeFunc(alphaDistancePerFrame, time));
+		return FadeOut(time, _defaultColor.a);
 	}
 
 	/// <summary>
@@ -89,13 +50,20 @@ public class FadeController : MonoBehaviour
 	/// <param name="time"></param>
 	/// <param name="alphaLimit"></param>
 	/// <returns></returns>
-	private IEnumerator FadeIn(float alphaDistancePerFrame, float alphaLimit)
+	public IEnumerator FadeIn(float time, float alphaLimit)
 	{
-		while(_currentColor.a > alphaLimit)
+		var alphaDistance = _fadeImage.color.a - alphaLimit;
+
+		// フェードアウトできるならば, TouchBlockerを有効にする.
+		if(alphaDistance > 0)
 		{
-			_currentColor -= new Color(0, 0, 0, alphaDistancePerFrame);
-			Debug.Log("[Debug] : Fade In Updated! as " + _currentColor.a); // 4debug
-			yield return null;
+			while(_fadeImage.color.a > alphaLimit)
+			{
+				_fadeImage.color -= new Color(0, 0, 0, GetAlphaDistancePerFrame(alphaDistance, time));
+				Debug.Log("[Debug] : Fade In Updated! as " + _fadeImage.color.a); // 4debug
+				yield return null;
+			}
+			gameObject.SetActive(false);
 		}
 	}
 
@@ -105,13 +73,20 @@ public class FadeController : MonoBehaviour
 	/// <param name="time"></param>
 	/// <param name="alphaLimit"></param>
 	/// <returns></returns>
-	private IEnumerator FadeOut(float alphaDistancePerFrame, float alphaLimit)
+	public IEnumerator FadeOut(float time, float alphaLimit)
 	{
-		while(_currentColor.a < alphaLimit)
+		var alphaDistance = alphaLimit - _fadeImage.color.a;
+
+		// フェードアウトできるならば, TouchBlockerを有効にする.
+		if(alphaDistance > 0)
 		{
-			_currentColor += new Color(0, 0, 0, alphaDistancePerFrame);
-			Debug.Log("[Debug] : Fade Out Updated! as " + _currentColor.a); // 4debug
-			yield return null;
+			gameObject.SetActive(true);
+			while(_fadeImage.color.a < alphaLimit)
+			{
+				_fadeImage.color += new Color(0, 0, 0, GetAlphaDistancePerFrame(alphaDistance, time));
+				Debug.Log("[Debug] : Fade Out Updated! as " + _fadeImage.color.a); // 4debug
+				yield return null;
+			}
 		}
 	}
 

@@ -42,12 +42,16 @@ public class PopUpController : MonoBehaviour
 		popUp.GetComponent<DamagePopUp>().Initialize(text);
 	}
 
+	/// <summary>
+	/// カットインのポップアップを作ります
+	/// </summary>
+	/// <param name="team"></param>
 	public void CreateCutInPopUp(Unit.Team team)
 	{
-		var popUp = Instantiate(gameObject, _ui.transform);
+		// var popUp = Instantiate(gameObject, _ui.transform);
 
 		string text = "=== " + team.ToString() + " Order ===";
 
-		popUp.GetComponent<CutInPopUp>().Initialize(text);
+		_ui.TouchBlocker.GetComponent<CutInPopUp>().Initialize(text, _ui.FadeController);
 	}
 }
