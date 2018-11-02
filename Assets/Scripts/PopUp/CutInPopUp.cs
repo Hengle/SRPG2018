@@ -17,14 +17,24 @@ public class CutInPopUp : BasePopUp
 	[SerializeField, Range(0, 1f)]
 	private float _fadeOutAlphaLimit;
 
+	protected IEnumerable Act()
+	{
+		var coroutine = StartCoroutine(Move());
+
+		yield return coroutine;
+
+		Destroy(gameObject);
+	}
+
 	protected override IEnumerator Move()
 	{
 		if(!_touchBlocker) Debug.LogError("[Error] : TouchBlocker is not set!");
 		if(!_touchBlocker.GetComponent<FadeController>()) Debug.LogError("[Error] : FadeController is not attached!");
 
+		Debug.Log("Move Called and call StartFadeOutDefault Coroutine");	// 4debug
 		// _fadeOutAlphaLimitまで_fadeTime秒でフェードアウト
-		_touchBlocker.SetActive(true);
-		StartCoroutine(_touchBlocker.GetComponent<FadeController>().StartFadeOut(_fadeTime, _fadeOutAlphaLimit));
+		_touchBlocker.GetComponent<FadeController>().StartFadeOutDefault(_fadeTime);
+		Debug.Log("Finished Fade out Coroutine");	// 4debug
 
 		float time = 0f;
 		float moveTime = (existTime - WaitTime) / 2;
@@ -48,7 +58,7 @@ public class CutInPopUp : BasePopUp
 			time += Time.deltaTime;
 		}
 
-		while(time<existTime)
+		while(time < existTime)
 		{
 			float ratio = time - (moveTime + WaitTime) / moveTime;
 			transform.eulerAngles = Vector3.Lerp(mid, end, ratio);
@@ -58,7 +68,6 @@ public class CutInPopUp : BasePopUp
 		}
 
 		// _fadeTime秒で元のアルファまでフェードイン
-		StartCoroutine(_touchBlocker.GetComponent<FadeController>().StartFadeInDefault(_fadeTime));
-		_touchBlocker.SetActive(false);
+		// yield return _touchBlocker.GetComponent<FadeController>().StartFadeInDefault(_fadeTime);
 	}
 }

@@ -29,9 +29,9 @@ public class FadeController : MonoBehaviour
 	/// </summary>
 	/// <param name="time"></param>
 	/// <returns></returns>
-	public IEnumerator StartFadeInDefault(float time)
+	public void StartFadeInDefault(float time)
 	{
-		return StartFadeIn(time, _defaultColor.a);
+		StartFadeIn(time, _defaultColor.a);
 	}
 
 	/// <summary>
@@ -39,15 +39,15 @@ public class FadeController : MonoBehaviour
 	/// </summary>
 	/// <param name="time"></param>
 	/// <returns></returns>
-	public IEnumerator StartFadeIn(float time, float alphaLimit)
+	public void StartFadeIn(float time, float alphaLimit)
 	{
-		Debug.Log("[Debug] : Fade In Called!"); // 4debug
-
 		var alphaDistance = _currentColor.a - alphaLimit;
-		while(_currentColor.a > alphaLimit)
+
+		// フェードアウトできるならば, TouchBlockerを有効にする.
+		if(alphaDistance > 0)
 		{
-			_currentColor -= new Color(0, 0, 0, GetAlphaDistancePerFrame(alphaDistance, time));
-			yield return null;
+			StartCoroutine(FadeCoroutine(FadeIn, GetAlphaDistancePerFrame(alphaDistance, time), alphaLimit));
+			gameObject.SetActive(false);
 		}
 	}
 
@@ -56,9 +56,9 @@ public class FadeController : MonoBehaviour
 	/// </summary>
 	/// <param name="time"></param>
 	/// <returns></returns>
-	public IEnumerator StartFadeOutDefault(float time)
+	public void StartFadeOutDefault(float time)
 	{
-		return StartFadeOut(time, _defaultColor.a);
+		StartFadeOut(time, _defaultColor.a);
 	}
 
 	/// <summary>
@@ -66,14 +66,51 @@ public class FadeController : MonoBehaviour
 	/// </summary>
 	/// <param name="time"></param>
 	/// <returns></returns>
-	public IEnumerator StartFadeOut(float time, float alphaLimit)
+	public void StartFadeOut(float time, float alphaLimit)
 	{
-		Debug.Log("[Debug] : Fade Out Called!"); // 4debug
-
 		var alphaDistance = alphaLimit - _currentColor.a;
+
+		// フェードアウトできるならば, TouchBlockerを有効にする.
+		if(alphaDistance > 0)
+		{
+			gameObject.SetActive(true);
+			StartCoroutine(FadeCoroutine(FadeOut, GetAlphaDistancePerFrame(alphaDistance, time), alphaLimit));
+		}
+	}
+
+	private IEnumerator FadeCoroutine(Func<float, float, IEnumerator> fadeFunc, float alphaDistancePerFrame, float time)
+	{
+		yield return StartCoroutine(fadeFunc(alphaDistancePerFrame, time));
+	}
+
+	/// <summary>
+	/// フェードインを実行するコルーチンメソッド
+	/// </summary>
+	/// <param name="time"></param>
+	/// <param name="alphaLimit"></param>
+	/// <returns></returns>
+	private IEnumerator FadeIn(float alphaDistancePerFrame, float alphaLimit)
+	{
+		while(_currentColor.a > alphaLimit)
+		{
+			_currentColor -= new Color(0, 0, 0, alphaDistancePerFrame);
+			Debug.Log("[Debug] : Fade In Updated! as " + _currentColor.a); // 4debug
+			yield return null;
+		}
+	}
+
+	/// <summary>
+	/// フェードアウトを実行するコルーチンメソッド
+	/// </summary>
+	/// <param name="time"></param>
+	/// <param name="alphaLimit"></param>
+	/// <returns></returns>
+	private IEnumerator FadeOut(float alphaDistancePerFrame, float alphaLimit)
+	{
 		while(_currentColor.a < alphaLimit)
 		{
-			_currentColor += new Color(0, 0, 0, GetAlphaDistancePerFrame(alphaDistance, time));
+			_currentColor += new Color(0, 0, 0, alphaDistancePerFrame);
+			Debug.Log("[Debug] : Fade Out Updated! as " + _currentColor.a); // 4debug
 			yield return null;
 		}
 	}

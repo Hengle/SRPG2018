@@ -29878,6 +29878,11 @@ Prefab:
       propertyPath: _fadeTime
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 114209386783998754, guid: 9d772d5b69f90df46881141ee5c2903f,
+        type: 2}
+      propertyPath: _touchBlocker
+      value: 
+      objectReference: {fileID: 1395844252}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9d772d5b69f90df46881141ee5c2903f, type: 2}
   m_IsPrefabAsset: 0
