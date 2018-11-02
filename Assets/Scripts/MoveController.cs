@@ -94,11 +94,9 @@ public class MoveController : MonoBehaviour
 		return infos.Where(x => x.Value >= 0).ToDictionary(x => x.Key, x => x.Value);
 	}
 
-	//現在使っている画像
-	private Image image;
-	private string vector;
-	private Unit targetUnit;
-	private string unit_name;
+	private Image image; //現在使っている画像
+	private string vector; //移動方向の定義
+	private string unit_name; //判別用にユニット名を保存
 	private bool moveflag = false;
 
 	/// <summary>
@@ -115,16 +113,6 @@ public class MoveController : MonoBehaviour
 		// 移動の際の描画ライブラリインスタンスを初期化
 		var sequence = DOTween.Sequence();
 
-		//アニメーター取得部分
-//		GameObject unit2 = GameObject.Find(unit.Name);
-		//animator = unit.GetComponent<Animator>();
-		//if (animator == null)
-		//{
-		//	Debug.LogWarning("[Debug] noanimator");
-		//}
-		//Debug.Log("[Debug] default state:"+animator.GetInteger("state")+" unit name = "+animator.name); //4debug
-
-		//Debug.Log("route[0]:" + routeFloors[0].X + "," + routeFloors[0].Y); //4debug
 		// 移動経路に沿って移動
 		for(var i = 1; i < routeFloors.Length; i++)
 		{
@@ -136,27 +124,22 @@ public class MoveController : MonoBehaviour
 			if (dx == 1)
 			{
 				vector = "right";
-				//animator.SetInteger("state", 3);
 			}
 			else if (dx == -1)
 			{
 				vector = "left";
-				//animator.SetInteger("state", 2);
 			}
 			else if (dy == 1)
 			{
 				vector = "usiro";
-				//animator.SetInteger("state", 0);
 			}
 			else if (dy == -1)
 			{
 				vector = "mae";
-				//animator.SetInteger("state", 1);
 			}
 			else
 			{
-				//animator.SetInteger("state", 1);
-				//Debug.Log("moving dx:" + dx + " dy:" + dy);
+				//Debug.Log("moving dx:" + dx + " dy:" + dy); //4debug
 			}
 
 			image = unit.GetComponent<Image>();
@@ -170,26 +153,21 @@ public class MoveController : MonoBehaviour
 			}
 
 
-			targetUnit = unit;
-			vector = "mae";
 			unit_name = unit.name;
 			moveflag = true;
 			StartCoroutine("MakeAnimation");
 
-//			animator.SetInteger("state", 2); //4debug
 
 			//Debug.Log(routeFloor.X+","+routeFloor.Y); //4debug
-			//Debug.Log("[Debug] state:" + animator.GetInteger("state")+" unit name ="+animator.name); //4debug
 			//ここまで追加コード
 			sequence.Append(unit.transform.DOMove(routeFloor.transform.position, 0.1f).SetEase(Ease.Linear));
 			moveflag = false;
-			//image.sprite = Resources.Load<Sprite>("Characters/suisei_default/onp_m");
 		}
 
 		// 移動が完了したら
 		sequence.OnComplete(() =>
 		{
-			//animator.SetInteger("state", 4);
+			//image.sprite = Resources.Load<Sprite>("Characters/" + unit_name + "_default/" +unit_name);
 			// unitのGameObjectの実体の座標も変更する
 			unit.MoveTo(routeFloors[routeFloors.Length - 1].X, routeFloors[routeFloors.Length - 1].Y);
 
@@ -210,16 +188,11 @@ public class MoveController : MonoBehaviour
 
 	public IEnumerator MakeAnimation()
 	{
-		//if(image.sprite == null)
-		//{
-		//	moveflag = false;
-		//	yield break;
-		//}
 		while (moveflag)
 		{
-			image.sprite = Resources.Load<Sprite>("Characters/suisei_default/" + vector+"_1");
+			image.sprite = Resources.Load<Sprite>("Characters/"+unit_name+"_default/" + vector+"_1");
 			yield return new WaitForSeconds(0.5f);
-			image.sprite = Resources.Load<Sprite>("Characters/suisei_default/" + vector + "_2");
+			image.sprite = Resources.Load<Sprite>("Characters/"+unit_name+"_default/" + vector + "_2");
 			yield return new WaitForSeconds(0.5f);
 
 		}
