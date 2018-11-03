@@ -48,7 +48,7 @@ public class NormalPopUp : MonoBehaviour
 		while(time < total)
 		{
 			float rate = (total - time) / upcomingTime;
-			transform.localPosition = Vector3.Lerp(displayPos, _initialPos, rate);
+			transform.localPosition = Vector3.Lerp(_initialPos, displayPos, rate);
 
 			yield return null;
 			time += Time.deltaTime;

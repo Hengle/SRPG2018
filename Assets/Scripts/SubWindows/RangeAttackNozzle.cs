@@ -23,6 +23,10 @@ public class RangeAttackNozzle : SubWindow
 	private BattleStateController _bsc;
 
 	private AccessReason _reason;
+	public AccessReason accessReason
+	{
+		get { return _reason; }
+	}
 
 	public void Initialize(AttackController ac, Units units, Map map, BattleStateController bsc)
 	{

@@ -26,6 +26,12 @@ public class PopUpController : MonoBehaviour
 	private BoardController board;
 
 	[SerializeField]
+	private NormalPopUp _normalPopUp;
+	public NormalPopUp NormalPopUp{
+		get{ return _normalPopUp; }
+	}
+
+	[SerializeField]
 	private Image _image;
 	public Image Image
 	{

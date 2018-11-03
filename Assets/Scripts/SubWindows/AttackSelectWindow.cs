@@ -12,6 +12,12 @@ public class AttackSelectWindow : SubWindow
 	[SerializeField]
 	private List<Button> _attackBtns;
 
+	[SerializeField]
+	private Color _onColor = new Color(255, 127, 0);
+	
+	[SerializeField]
+	private Color _offColor = new Color(96, 48, 122);
+
 	private Units _units;
 	private AttackController _ac;
 	private RangeAttackNozzle _ran;

@@ -215,6 +215,14 @@ public class Floor : MonoBehaviour
 		_bsc.NextBattleState();
 	}
 
+	private void ClickBehaviorOnAttacking()
+	{
+		if(IsAttackable)
+		{
+			_map.Ui.PopUp.NormalPopUp.PopUpNormalInformation("Cannot Select Floor now. \n If Wanna Attack, Please Push Button(lower right)");
+		}
+	}
+
 	/// <summary>
 	/// マスをクリックした場合の挙動を登録します
 	/// </summary>
@@ -223,7 +231,7 @@ public class Floor : MonoBehaviour
 		ClickBehaviors = new Dictionary<BattleStates, Action>();
 		ClickBehaviors[BattleStates.Check] = ClickBehaviorOnChecking;
 		ClickBehaviors[BattleStates.Move] = ClickBehaviorOnMoving;
-		ClickBehaviors[BattleStates.Attack] = () => { };
+		ClickBehaviors[BattleStates.Attack] = ClickBehaviorOnAttacking;
 		ClickBehaviors[BattleStates.Load] = () => { };
 	}
 

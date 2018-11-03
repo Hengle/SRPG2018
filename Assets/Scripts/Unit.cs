@@ -321,7 +321,11 @@ public class Unit : MonoBehaviour
 		var scale = attack.Scale;
 
 		// 範囲攻撃の場合は、クリック発動をさせない
-		if(scale == Attack.AttackScale.Range) return;
+		if(scale == Attack.AttackScale.Range)
+		{
+			_map.Ui.PopUp.NormalPopUp.PopUpNormalInformation("Cannot Select Unit now. \n If Wanna Attack, Please Push Button(lower right)");
+			return;
+		}
 
 		// 強攻撃特殊処理!!! Charge前は攻撃しない!!! (発動契機は、Set2開始時)
 		if(attack.Kind == Attack.Level.High)
@@ -330,6 +334,7 @@ public class Unit : MonoBehaviour
 			{
 				// Set1のときは、RangeNozzleButtonを押して、Chargeを始めるため、クリックを拒否します。
 				case AttackStates.LittleAttack:
+					_map.Ui.PopUp.NormalPopUp.PopUpNormalInformation("Cannot Select Unit. \n If Wanna Attack, Please Push Button(lower right)");
 					return;
 
 				// Set2で強攻撃が出来る場合は、攻撃します。
@@ -453,6 +458,7 @@ public class Unit : MonoBehaviour
 		PlanningAttack = null;
 
 		// 説明を行う
+		_map.Ui.PopUp.NormalPopUp.PopUpNormalInformation("Strong Attack Is Interrupted !!!");
 	}
 
 	/// <summary>
