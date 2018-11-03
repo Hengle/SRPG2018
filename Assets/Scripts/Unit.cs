@@ -451,6 +451,8 @@ public class Unit : MonoBehaviour
 
 		// 不要な情報になったため、削除もしておく
 		PlanningAttack = null;
+
+		// 説明を行う
 	}
 
 	/// <summary>
