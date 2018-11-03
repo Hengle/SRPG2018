@@ -14,6 +14,7 @@ public class NormalPopUp : MonoBehaviour
 	private Vector3 _initialPos;
 
 	private Text _text;
+	private IEnumerator enumerator;
 
 	private void Start()
 	{
@@ -24,7 +25,11 @@ public class NormalPopUp : MonoBehaviour
 	{
 		_text.text = text;
 
-		StartCoroutine(Move());
+		if(enumerator != null) StopCoroutine(enumerator);
+
+		enumerator = Move();
+
+		StartCoroutine(enumerator);
 	}
 
 	IEnumerator Move()
