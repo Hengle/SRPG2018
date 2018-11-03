@@ -219,7 +219,14 @@ public class Floor : MonoBehaviour
 	{
 		if(IsAttackable)
 		{
-			_map.Ui.PopUp.NormalPopUp.PopUpNormalInformation("Cannot Select Floor now. \n If Wanna Attack, Please Push Button(lower right)");
+			if(_map.Ui.RangeAttackNozzle.accessReason==RangeAttackNozzle.AccessReason.RangeAttack)
+			{
+				_map.Ui.PopUp.NormalPopUp.PopUpNormalInformation("範囲攻撃を行う場合は、\n 右下のボタンをクリックしてください");
+			}
+			else
+			{
+				_map.Ui.PopUp.NormalPopUp.PopUpNormalInformation("溜め攻撃を行う場合は、\n 右下のボタンをクリックしてください");
+			}
 		}
 	}
 
