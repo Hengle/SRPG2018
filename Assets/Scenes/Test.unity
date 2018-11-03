@@ -28425,7 +28425,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _ui: {fileID: 1150024740}
   board: {fileID: 181863661}
-  _normalPopUp: {fileID: 0}
+  _normalPopUp: {fileID: 1311584453}
   _image: {fileID: 1577890393}
   _text: {fileID: 1023888843}
 --- !u!1 &1207733588
@@ -30263,6 +30263,12 @@ CanvasRenderer:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1299954448}
   m_CullTransparentMesh: 0
+--- !u!114 &1311584453 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114648677098112080, guid: bfc5dad0cc3933543b5171a891746317,
+    type: 2}
+  m_PrefabInternal: {fileID: 1325729250}
+  m_Script: {fileID: 11500000, guid: e985f905a0ad81740807a0f1f3ebe454, type: 3}
 --- !u!1 &1318730188
 GameObject:
   m_ObjectHideFlags: 0
