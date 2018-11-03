@@ -16,8 +16,10 @@ public class RangeAttackNozzle : SubWindow
 	}
 
 
+	[SerializeField]
 	private Button _centerButton;
-	private Button _circleButton;
+	[SerializeField]
+	private Button _rotateButton;
 	private Text _text;
 
 	private AttackController _ac;
@@ -30,7 +32,7 @@ public class RangeAttackNozzle : SubWindow
 	public void Initialize(AttackController ac, Units units, Map map, BattleStateController bsc)
 	{
 		_centerButton = transform.Find("TurnLabel").GetComponent<Button>();
-		_circleButton = transform.Find("CircleButton").GetComponent<Button>();
+		_rotateButton = transform.Find("CircleButton").GetComponent<Button>();
 		_text = _centerButton.gameObject.GetComponent<Text>();
 
 		_ac = ac;
@@ -39,12 +41,12 @@ public class RangeAttackNozzle : SubWindow
 		_bsc = bsc;
 
 		_centerButton.onClick.AddListener(() => ActRangeAttack());
-		_circleButton.onClick.AddListener(() => RotateRangeHighLight());
+		_rotateButton.onClick.AddListener(() => RotateRangeHighLight());
 
 		// ハイライトエフェクトくっつけます
 		_map.Ui.ChargeEffectController.AlwaysAttachEffect(_centerButton.transform, HighLightSize);
 	}
-	
+
 
 	/// <summary>
 	/// 範囲攻撃のときに、Attack!ボタンを押したら、攻撃が始まります。
@@ -72,7 +74,7 @@ public class RangeAttackNozzle : SubWindow
 			// 攻撃します
 			_ac.Attack(attacker, attack);
 		}
-		
+
 		Hide();
 
 		// 場面を進めます
@@ -98,7 +100,7 @@ public class RangeAttackNozzle : SubWindow
 		int dir = attackInfo.Value.Value;
 		var attack = attackInfo.Value.Key;
 		if(attack.Scale == Attack.AttackScale.Single) return;
-		
+
 		// 回転できない場合も無視します
 		var rangeAttack = (RangeAttack)attack;
 		if(!rangeAttack.IsRotatable) return;
